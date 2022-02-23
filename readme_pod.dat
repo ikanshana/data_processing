@@ -1,0 +1,6 @@
+merge_all.py merge all nc files 
+pod_all.py computes given number of POD modes
+pod_all_backup.py computes all POD modes
+
+
+The input data produced by merge_all.py is not saved here(Backup exist in local directory) anymore but can be reproduced.

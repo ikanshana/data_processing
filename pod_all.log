@@ -1,0 +1,26 @@
+POD started for combined runs
+
+ Reading data... 
+Shape of read u-component of velocity (23250, 163, 156)
+
+ Finished in  444.980509519577
+
+ Computing Correlation matrix ...
+
+ Finished in  88.31700277328491
+
+ Solving eigenvalue problem ...
+
+ Finished in  905.8655300140381
+
+ Computing POD modes ...
+
+ Finished in  175.469251871109
+
+ Saving POD modes ...
+('dim_x', <class 'netCDF4._netCDF4.Dimension'>: name = 'dim_x', size = 156)
+('dim_y', <class 'netCDF4._netCDF4.Dimension'>: name = 'dim_y', size = 163)
+('nmodes', <class 'netCDF4._netCDF4.Dimension'> (unlimited): name = 'nmodes', size = 0)
+('dim_t', <class 'netCDF4._netCDF4.Dimension'>: name = 'dim_t', size = 23250)
+
+ Finished in  1.1075448989868164
