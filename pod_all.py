@@ -15,20 +15,23 @@ start = timer.time()
 
 print("\n Reading data... ")
 
-fn = data_dir + 'combined_runs.nc'
+#For 4 Hz data
+fn = data_dir + 'G_H_2.4_large_run_combined.nc'
+
+#fn = data_dir + 'combined_runs.nc'
 #'/home/administrateur/Documents/lmfl_data/G_H_2.4_100Hz/combined_runs.nc'
 
-time_filter = 2
+time_filter = 1
 
 ds = nc.Dataset(fn)
 
 velx = ds['vel_x'][::time_filter,:,:]
-vely = ds['vel_z'][::time_filter,:,:]
+vely = ds['vel_y'][::time_filter,:,:]
 print("Shape of read u-component of velocity", velx.shape)
 grid_x = ds['grid_x'][:,:]
-grid_y = ds['grid_z'][:,:]
+grid_y = ds['grid_y'][:,:]
 
-time = ds['time'][::time_filter]
+#time = ds['time'][::time_filter]
 
 ds.close()
 
@@ -87,7 +90,6 @@ end = timer.time()
 print("\n Finished in ", end - start)
 
 
-
 start = timer.time()
 print("\n Saving POD modes ...")
 fn = data_dir + 'combined_k_pod_modes.nc'
@@ -110,7 +112,7 @@ for dim in ds_w.dimensions.items():
 
 grid_x_w = ds_w.createVariable('grid_x', np.float32, ('dim_y', 'dim_x'))
 grid_y_w = ds_w.createVariable('grid_y', np.float32, ('dim_y', 'dim_x'))
-time_w = ds_w.createVariable('time',np.float32,('dim_t',))
+#time_w = ds_w.createVariable('time',np.float32,('dim_t',))
 eig_vec = ds_w.createVariable('eig_vec',np.float64,('dim_t','nmodes')) 
 eig_val = ds_w.createVariable('eig_val',np.float64,('nmodes',)) 
 pod_vel_x = ds_w.createVariable('pod_vel_x',np.float64,('dim_y','dim_x','nmodes'))
@@ -119,7 +121,7 @@ coeff_t = ds_w.createVariable('coeff_t',np.float64,('nmodes','dim_t'))
 
 grid_x_w[:,:] = grid_x
 grid_y_w[:,:] = grid_y
-time_w[:] = time
+#time_w[:] = time
 
 eig_vec[:,:] = v
 eig_val[:] = w
