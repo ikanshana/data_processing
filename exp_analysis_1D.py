@@ -100,11 +100,10 @@ def switch_counts(Y_m, time, y_cut_plus, y_cut_minus, series_count = 1, sample_N
 
     """
     If series_count is specified more than 1, it needs sample size of the series
-    , sample_N to discount switches coming from jump between two consecutive series
+    , sample_N
     """
 
-    #Initial states and counters
-    #+ is left, - is right
+    #Initial states and counters, + is left, - is right
     if Y_m[0] > y_cut_plus:
         curr_state = 'left'
     elif Y_m[0] < y_cut_minus:
@@ -113,12 +112,8 @@ def switch_counts(Y_m, time, y_cut_plus, y_cut_minus, series_count = 1, sample_N
         curr_state = 'center'
 
     state_transition_count = 0
-    switch = 0
-    prev_state = curr_state
-    prev_prev_state = curr_state
+    waiting_times = []
     counter = -1
-    transition_instants = []
-
 
     for t, y in zip(time, Y_m):
 
@@ -130,33 +125,33 @@ def switch_counts(Y_m, time, y_cut_plus, y_cut_minus, series_count = 1, sample_N
         else :
             curr_state = 'center'
 
+        if counter == 0:
+            prev_state = curr_state
+            prev_prev_state = curr_state
+            transition_instants = []
+
         if curr_state != prev_state:
             switch = 1
         else :
             switch = 0
 
+        #Check whether state goes from left to right or vice-versa
         if switch == 1:
             if curr_state != 'center' and curr_state != prev_prev_state and prev_prev_state != 'center':
-
-            #If multiple series than check if the switch is due to series change
-                if series_count == 1:
-                    state_transition_count = state_transition_count + 1
-                    transition_instants.append(t)
-
-                else :
-                    if (t/(time[1] - time[0])) != sample_N:
-                        state_transition_count = state_transition_count + 1
-                        transition_instants.append(t)
-                    else:
-                        prev_state = curr_state
-                        prev_prev_state = curr_state
+                state_transition_count = state_transition_count + 1
+                transition_instants.append(t)
 
             prev_prev_state = prev_state
+
+        #Compute waiting time at the end of one continous series
+        if counter == sample_N - 1:
+            waiting_times = waiting_times + (np.diff(transition_instants).tolist())
+            counter = -1
 
         prev_state = curr_state
 
 
-    return transition_instants, state_transition_count
+    return transition_instants, state_transition_count, waiting_times
 
 
 def Plot_Ym(datadir, time, Y_m, all_transition_instants, y_cut_plus, y_cut_minus):
