@@ -6,7 +6,7 @@ import os
 from numpy import linalg as LA
 import time as timer
 
-data_dir = '/home/administrateur/Documents/lmfl_data/G_H_2.4/'
+data_dir = '/home/administrateur/Documents/lmfl_data/G_H_2.4_100Hz_twisted/tilted1-z/'
 
 i = 0
 for run in range(1,11):
@@ -14,17 +14,17 @@ for run in range(1,11):
     print('Reading run ' + str(run))
 
     if run < 10:
-        fn = data_dir + 'G_H_2.4_large_run0' + str(run) + '.nc'
+        fn = data_dir + 'tilted1-z_run_0' + str(run) + '.nc'
     else:
-        fn = data_dir + 'G_H_2.4_large_run' + str(run) + '.nc'
+        fn = data_dir + 'tilted1-z_run_' + str(run) + '.nc'
 
     ds = nc.Dataset(fn)
 
     velx = ds['vel_x'][:,:,:]
-    vely = ds['vel_y'][:,:,:]
+    vely = ds['vel_z'][:,:,:]
 
     grid_x = ds['grid_x'][:,:]
-    grid_y = ds['grid_y'][:,:]
+    grid_y = ds['grid_z'][:,:]
     flag = ds['flag'][:,:]
     dim_t =  ds.dimensions['dim_t'].size
 

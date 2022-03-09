@@ -16,7 +16,7 @@ start = timer.time()
 print("\n Reading data... ")
 
 #For 4 Hz data
-fn = data_dir + 'G_H_1.25_large_run_combined.nc'
+fn = data_dir + 'G_H_2.4_100Hz_twisted_straight.nc'
 
 #fn = data_dir + 'combined_runs.nc'
 #'/home/administrateur/Documents/lmfl_data/G_H_2.4_100Hz/combined_runs.nc'
@@ -69,13 +69,13 @@ for i in range(C.shape[0]):
 
 start = timer.time()
 print("\n Solving eigenvalue problem ...")
-nmodes = 10
+nmodes = 30
 
 w, v = LA.eigh(C,eigvals=(dimt - nmodes, dimt-1))
 w = w[::-1]
 v = v[:,::-1]
 
-end = timer.time() 
+end = timer.time()
 print("\n Finished in ", end - start)
 
 
@@ -92,20 +92,20 @@ print("\n Finished in ", end - start)
 
 start = timer.time()
 print("\n Saving POD modes ...")
-fn = data_dir + 'combined_G_H_1.25_pod_modes.nc'
+fn = data_dir + 'combined_G_H_2.4_100Hz_pod_modes_twisted_straight.nc'
 #'/home/administrateur/Documents/lmfl_data/G_H_2.4_100Hz/POD1/combined_' + 'k_pod_modes.nc'
 
-try: 
+try:
     ds_w.close()  # just to be safe, make sure dataset is not already open.
-except: 
+except:
     pass
 
 ds_w = nc.Dataset(fn, 'w', format='NETCDF4')
 
-dim_x = ds_w.createDimension('dim_x', dimx)     
-dim_y = ds_w.createDimension('dim_y', dimy)    
+dim_x = ds_w.createDimension('dim_x', dimx)
+dim_y = ds_w.createDimension('dim_y', dimy)
 dim_nmodes = ds_w.createDimension('nmodes', None)
-dim_time = ds_w.createDimension('dim_t', dimt) 
+dim_time = ds_w.createDimension('dim_t', dimt)
 
 for dim in ds_w.dimensions.items():
     print(dim)
@@ -113,8 +113,8 @@ for dim in ds_w.dimensions.items():
 grid_x_w = ds_w.createVariable('grid_x', np.float32, ('dim_y', 'dim_x'))
 grid_y_w = ds_w.createVariable('grid_y', np.float32, ('dim_y', 'dim_x'))
 #time_w = ds_w.createVariable('time',np.float32,('dim_t',))
-eig_vec = ds_w.createVariable('eig_vec',np.float64,('dim_t','nmodes')) 
-eig_val = ds_w.createVariable('eig_val',np.float64,('nmodes',)) 
+eig_vec = ds_w.createVariable('eig_vec',np.float64,('dim_t','nmodes'))
+eig_val = ds_w.createVariable('eig_val',np.float64,('nmodes',))
 mean_vel_x = ds_w.createVariable('mean_vel_x',np.float64,('dim_y','dim_x'))
 mean_vel_y = ds_w.createVariable('mean_vel_y',np.float64,('dim_y','dim_x'))
 pod_vel_x = ds_w.createVariable('pod_vel_x',np.float64,('dim_y','dim_x','nmodes'))
@@ -141,4 +141,3 @@ ds_w.close
 
 end = timer.time()
 print("\n Finished in ", end - start)
-
