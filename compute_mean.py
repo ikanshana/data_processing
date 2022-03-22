@@ -60,18 +60,18 @@ for run in run_list:
         vel_x_mean = ds_w.createVariable('vel_x', np.float64,('dim_t', 'dim_z','dim_x'))
         vel_z_mean = ds_w.createVariable('vel_z', np.float64,('dim_t', 'dim_z','dim_x'))
 
-        vel_x_mean[0,:,:] = np.mean(velx, axis=0, keepdims=True)
-        vel_z_mean[0,:,:] = np.mean(velz, axis=0, keepdims=True)
+        vel_x_mean[0,:,:] = np.sum(velx, axis=0, keepdims=True)
+        vel_z_mean[0,:,:] = np.sum(velz, axis=0, keepdims=True)
 
     else:
-        vel_x_mean[0,:,:] = vel_x_mean[0,:,:] + np.mean(velx, axis=0, keepdims=True)
-        vel_z_mean[0,:,:] = vel_z_mean[0,:,:] + np.mean(velz, axis=0, keepdims=True)
+        vel_x_mean[0,:,:] = vel_x_mean[0,:,:] + np.sum(velx, axis=0, keepdims=True)
+        vel_z_mean[0,:,:] = vel_z_mean[0,:,:] + np.sum(velz, axis=0, keepdims=True)
 
     #####  Add for the ith iteration to combined data
     i = i + 1
     print('Added data for run ' + str(run))
 
-vel_x_mean[0,:,:] = vel_x_mean[0,:,:]/N_run
-vel_z_mean[0,:,:] = vel_z_mean[0,:,:]/N_run
+vel_x_mean[0,:,:] = vel_x_mean[0,:,:]/(N_run*dimt)
+vel_z_mean[0,:,:] = vel_z_mean[0,:,:]/(N_run*dimt)
 
 ds_w.close()
